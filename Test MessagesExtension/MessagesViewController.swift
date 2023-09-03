@@ -7,12 +7,47 @@
 
 import UIKit
 import Messages
+import SwiftUI
+
 
 class MessagesViewController: MSMessagesAppViewController {
+    
+   
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        // Get the UIKit view of your SwiftUI View
+        
+        
+        let child = UIHostingController(rootView: ContentView(viewSize: presentationStyle, activeSession: activeConversation))
+
+        
+        
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(child.view)
+
+
+        // Set the place where your view will be displayed
+        let constraints = [
+
+                    child.view.topAnchor.constraint(equalTo: view.topAnchor),
+
+                    child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+                    child.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+
+                    child.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+                    child.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+
+                    child.view.heightAnchor.constraint(equalTo: view.heightAnchor)
+
+        ]
+
+        view.addConstraints(constraints)
+        
     }
     
     // MARK: - Conversation Handling
@@ -39,10 +74,16 @@ class MessagesViewController: MSMessagesAppViewController {
         // extension on a remote device.
         
         // Use this method to trigger UI updates in response to the message.
+        print(" didReceive")
+
     }
     
     override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
         // Called when the user taps the send button.
+        print(" didStartSending")
+        self.dismiss()
+
+
     }
     
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
@@ -59,7 +100,33 @@ class MessagesViewController: MSMessagesAppViewController {
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         // Called after the extension transitions to a new presentation style.
-    
+        
+        let child = UIHostingController(rootView: ContentView(viewSize: presentationStyle, activeSession: self.activeConversation))
+
+        
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(child.view)
+
+
+        // Set the place where your view will be displayed
+        let constraints = [
+
+                    child.view.topAnchor.constraint(equalTo: view.topAnchor),
+
+                    child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+                    child.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+
+                    child.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+                    child.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+
+                    child.view.heightAnchor.constraint(equalTo: view.heightAnchor)
+
+        ]
+
+        view.addConstraints(constraints)
+        
         // Use this method to finalize any behaviors associated with the change in presentation style.
     }
 

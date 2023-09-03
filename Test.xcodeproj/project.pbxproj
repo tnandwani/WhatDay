@@ -11,8 +11,8 @@
 		CA82C0772A9342BA00F7A7BE /* Test MessagesExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CA82C0762A9342BA00F7A7BE /* Test MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CA82C07C2A9342BA00F7A7BE /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA82C07B2A9342BA00F7A7BE /* Messages.framework */; };
 		CA82C07F2A9342BA00F7A7BE /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA82C07E2A9342BA00F7A7BE /* MessagesViewController.swift */; };
-		CA82C0822A9342BA00F7A7BE /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA82C0802A9342BA00F7A7BE /* MainInterface.storyboard */; };
 		CA82C0842A9342BA00F7A7BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA82C0832A9342BA00F7A7BE /* Assets.xcassets */; };
+		CA82C0932A934C1C00F7A7BE /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA82C0922A934C1C00F7A7BE /* SwiftUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,9 +45,9 @@
 		CA82C0762A9342BA00F7A7BE /* Test MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Test MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA82C07B2A9342BA00F7A7BE /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		CA82C07E2A9342BA00F7A7BE /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
-		CA82C0812A9342BA00F7A7BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		CA82C0832A9342BA00F7A7BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA82C0852A9342BA00F7A7BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA82C0922A934C1C00F7A7BE /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				CA82C07E2A9342BA00F7A7BE /* MessagesViewController.swift */,
-				CA82C0802A9342BA00F7A7BE /* MainInterface.storyboard */,
+				CA82C0922A934C1C00F7A7BE /* SwiftUIView.swift */,
 				CA82C0832A9342BA00F7A7BE /* Assets.xcassets */,
 				CA82C0852A9342BA00F7A7BE /* Info.plist */,
 			);
@@ -196,7 +196,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA82C0842A9342BA00F7A7BE /* Assets.xcassets in Resources */,
-				CA82C0822A9342BA00F7A7BE /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA82C0932A934C1C00F7A7BE /* SwiftUIView.swift in Sources */,
 				CA82C07F2A9342BA00F7A7BE /* MessagesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,17 +220,6 @@
 			targetProxy = CA82C0782A9342BA00F7A7BE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		CA82C0802A9342BA00F7A7BE /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CA82C0812A9342BA00F7A7BE /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CA82C0862A9342BA00F7A7BE /* Debug */ = {
@@ -351,6 +340,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = "Test MessagesExtension/Test MessagesExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U9S74NJA8U;
@@ -377,6 +367,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = "Test MessagesExtension/Test MessagesExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U9S74NJA8U;
