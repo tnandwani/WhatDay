@@ -1,6 +1,6 @@
 import SwiftUI
 import Messages
-
+import Charts
 
 extension View {
     func snapshot() -> UIImage {
@@ -16,38 +16,35 @@ extension View {
     }
 }
 
-func sendVote (session: MSConversation?) {
-    let alternateMessageLayout = MSMessageTemplateLayout()
-    
-    let messageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
-
+@MainActor func sendVote (session: MSConversation?, name: String) {
     let message = MSMessage()
+    
+       
+    
+
+
+    let layout = MSMessageTemplateLayout()
+    
+    layout.caption = name
+    layout.subcaption = "0 / \(((session?.remoteParticipantIdentifiers.count ?? 1) + 1)) Votes"
+
+    
+
+    let renderer = ImageRenderer(content: VoteResultsView())
+
+
+    if let uiImage = renderer.uiImage {
+        // use the rendered image somehow
+        layout.image = uiImage
+        
+    }
+    
     
     if(session != nil){
         print("not nil")
-    
-    
-        guard let components = NSURLComponents(string: "dogwatch.com") else {
-            fatalError("Invalid base url")
-        }
-         
-        let size = URLQueryItem(name: "Size", value: "Large")
-        let count = URLQueryItem(name: "Topping_Count", value: "2")
-        let cheese = URLQueryItem(name: "Topping_0", value: "Cheese")
-        let pepperoni = URLQueryItem(name: "Topping_1", value: "Pepperoni")
-        components.queryItems = [size, count, cheese, pepperoni]
-         
-        guard let url = components.url  else {
-            fatalError("Invalid URL components.")
-        }
-        message.url = url
-
-        message.layout = messageLayout
-        
-
-
+        message.layout = layout
         session?.send(message) { (errorOrNil) in
-            if let error = errorOrNil {
+            if errorOrNil != nil {
                 // Handle the error here...
             }
         }
@@ -55,9 +52,7 @@ func sendVote (session: MSConversation?) {
     }
     else{
         print("nillll")
-
         print(session.hashValue)
-
     }
     
     
@@ -66,6 +61,7 @@ func sendVote (session: MSConversation?) {
 
 struct ContentView: View {
     @State private var dates: Set<DateComponents> = []
+    @State var eventName: String = ""
     
     var viewSize: MSMessagesAppPresentationStyle
     var activeSession: MSConversation?
@@ -79,13 +75,12 @@ struct ContentView: View {
         
         VStack {
             
-            
             if(viewSize == .transcript){
                 MultiDatePicker("Dates Available", selection: $dates)
 
             }
             if(viewSize == .compact){
-                VoteResultsView()
+                EventCreationView()
 
             }
             if(viewSize == .expanded){
@@ -111,14 +106,16 @@ struct ContentView: View {
                         
                         Button(action: {
                         // Add your submit button action here
-                        print("Submit button tapped")
-                        sendVote(session: activeSession)
+                        print("Vote count")
+                        print(String(dates.count))
+
+                        sendVote(session: activeSession, name: eventName)
 
                         }) {
                             Text("Submit")
                                            .font(.headline)
                                            .padding()
-                                           .background(Color.blue)
+                                           .background(Color(#colorLiteral(red: 0.3333333433, green: 0.7568627596, blue: 0.7686274648, alpha: 1)))
                                            .foregroundColor(.white)
                                            .cornerRadius(10)
                         }
@@ -149,34 +146,97 @@ struct ContentView: View {
 struct VoteResultsView: View {
     var body: some View {
         VStack {
-            Text("Top Free Dates")
-                        
+            Text("-").padding(.top, 10)
             // Display vote results here
-            VoteResultRow(candidateName: "Date A", voteCount: 120)
-            VoteResultRow(candidateName: "Date B", voteCount: 95)
-            VoteResultRow(candidateName: "Date C", voteCount: 78)
-            VoteResultRow(candidateName: "Date D", voteCount: 64)
-           
-        }
+            Chart(data) {
+                    BarMark(
+                        xStart: .value("Start Time", 0),
+                        xEnd: .value("End Time", $0.count),
+                        y: .value("Job", $0.date)
+                    ).opacity(0.7)
+                    .foregroundStyle(Color(#colorLiteral(red: 0.3333333433, green: 0.7568627596, blue: 0.7686274648, alpha: 1)))
+            }.padding(10)
+        }.frame(minWidth: 400)
+
     }
 }
 
-struct VoteResultRow: View {
-    let candidateName: String
-    let voteCount: Int
+struct Vote : Identifiable {
+    let id: UUID
+    let date: String
+    let count: Int
+}
+
+let data: [Vote] = [
+    Vote(id: UUID(), date: "January 16", count: 5),
+    Vote(id: UUID(), date: "January 13", count: 3),
+    Vote(id: UUID(), date: "January 12", count: 2)
+]
+
+
+struct EventCreationView: View {
+    @State var eventName: String = ""
+    @State private var selectedDay = 1 // Default selection
+    @State private var selectedTab = 1
     
     var body: some View {
-        HStack {
-            Text(candidateName)
-                .font(.body)
-                .fontWeight(.bold)
+        VStack {
+            TextField("Create New Event", text: $eventName)
+                .textFieldStyle(PlainTextFieldStyle())
+                .padding()
+            
+            TabView(selection: $selectedTab) {
+                Text("1 Day").padding(.bottom, 60)
+                    .tabItem {
+                        Image(systemName: "1.circle").foregroundColor(.red)
+                    }
+                    .tag(1)
+                
+                Text("2 Day").padding(.bottom, 60)
+                    .tabItem {
+                        Image(systemName: "2.circle").foregroundColor(.red)
+                    }
+                    .tag(2)
+                Text("3 Day").padding(.bottom, 60)
+                    .tabItem {
+                        Image(systemName: "3.circle").foregroundColor(.red)
+                    }
+                    .tag(3)
+                
+                Text("4 Day").padding(.bottom, 60)
+                    .tabItem {
+                        Image(systemName: "4.circle").foregroundColor(.red)
+                    }
+                    .tag(4)
+                
+                Text("5 Day").padding(.bottom, 60)
+                    .tabItem {
+                        Image(systemName: "5.circle").foregroundColor(.red)
+                    }
+                    .tag(5)
+                
+            }.accentColor(Color(#colorLiteral(red: 0.3333333433, green: 0.7568627596, blue: 0.7686274648, alpha: 1)))
             
             Spacer()
             
-            Text("\(voteCount) Votes")
-                .font(.headline)
-                .foregroundColor(.gray)
-        }
-        .padding()
+            Button(action: {
+                // Handle the submission of the event name and selected day here
+                print("Event Name: \(eventName)")
+                print("Selected Day: \(selectedDay)")
+            }) {
+                Text("Submit")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity) // Make the button full width
+                    .padding()
+                    .background(Color(#colorLiteral(red: 0.3333333433, green: 0.7568627596, blue: 0.7686274648, alpha: 1)))
+                    .cornerRadius(0) // Remove corner radius to make it thinner
+            }
+            .background(Color.blue) // Add background color to fill full width
+            .padding(0) // Remove padding to make it thinner
+            
+            Spacer()
+        }.padding(.horizontal, 10)
+            .navigationBarTitle("Create Event")
     }
 }
